@@ -16,7 +16,11 @@ builder.Services.AddDbContext<NzWalksDbContext>(option => {
 });
 
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+builder.Services.AddScoped<IWalksRepository, WalksRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options => 
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 
