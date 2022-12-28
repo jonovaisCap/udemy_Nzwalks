@@ -45,6 +45,11 @@ namespace NzWalks.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromBody] NewWalkDifficultyDTO newWalkDifficultyDTO) {
+
+            if(!ValidateAddAsync(newWalkDifficultyDTO)) {
+                return BadRequest(ModelState);
+            }
+
             var domainDifficulty = new WalkDifficulty {
                 Code = newWalkDifficultyDTO.Code
             };
@@ -58,6 +63,10 @@ namespace NzWalks.Controllers
         [HttpPut]
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] NewWalkDifficultyDTO newWalkDifficultyDTO) {
+            if(!ValidateUpdateAsync(newWalkDifficultyDTO)) {
+                return BadRequest(ModelState);
+            }
+            
             var domainDifficulty = new WalkDifficulty {
                 Code = newWalkDifficultyDTO.Code
             };
@@ -83,5 +92,41 @@ namespace NzWalks.Controllers
             } else
                 return NotFound();
         }
+
+        #region     Private methods
+
+        private bool ValidateAddAsync(NewWalkDifficultyDTO newWalkDifficultyDTO) {
+            if(newWalkDifficultyDTO == null) {
+                ModelState.AddModelError(nameof(newWalkDifficultyDTO), $"Must insert some data");
+            }
+
+            if(string.IsNullOrWhiteSpace(newWalkDifficultyDTO.Code)) {
+                ModelState.AddModelError(nameof(newWalkDifficultyDTO.Code), $"{nameof(newWalkDifficultyDTO.Code)} cannot be empty!");
+            }
+
+            if(ModelState.ErrorCount > 0) {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateUpdateAsync(NewWalkDifficultyDTO newWalkDifficultyDTO) {
+            if(newWalkDifficultyDTO == null) {
+                ModelState.AddModelError(nameof(newWalkDifficultyDTO), $"Must insert some data");
+            }
+
+            if(string.IsNullOrWhiteSpace(newWalkDifficultyDTO.Code)) {
+                ModelState.AddModelError(nameof(newWalkDifficultyDTO.Code), $"{nameof(newWalkDifficultyDTO.Code)} cannot be empty!");
+            }
+
+            if(ModelState.ErrorCount > 0) {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
     }
 }

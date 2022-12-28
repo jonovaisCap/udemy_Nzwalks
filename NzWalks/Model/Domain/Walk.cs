@@ -11,7 +11,6 @@ namespace NzWalks.Model.Domain
         public Guid RegionId { get; set; }
 
         //Navigation Property
-
         public Region Region { get; set; }
 
         public WalkDifficulty WalkDifficulty { get; set; }
