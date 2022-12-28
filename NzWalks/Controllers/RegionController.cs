@@ -4,6 +4,7 @@ using NzWalks.Model.Domain;
 using NzWalks.Repositories;
 using NzWalks.Model.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NzWalks.Controllers
 {  
@@ -22,6 +23,7 @@ namespace NzWalks.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllRegions() {
             
             var regions = await regionRepository.GetAllAsync();
@@ -33,6 +35,7 @@ namespace NzWalks.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetRegionAsync")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetRegionAsync(Guid id) {
 
             var region = await regionRepository.GetAsync(id);
@@ -47,6 +50,7 @@ namespace NzWalks.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddRegionAsync(NewRegionDTO newRegion) {
 
             // Validate Request
@@ -73,6 +77,7 @@ namespace NzWalks.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteRegionAsync(Guid id) {
 
             var region = await regionRepository.DeleteAsync(id);
@@ -88,6 +93,7 @@ namespace NzWalks.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionDTO regionDTO) {
 
             if(!ValidateUpdateRegion(regionDTO)) {
