@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using FluentValidation;
+using NzWalks.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +51,10 @@ builder.Services.AddScoped<IWalksRepository, WalksRepository>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();
 builder.Services.AddScoped<ITokenHandler, NzWalks.Repositories.TokenHandler>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddScoped<IValidator, NewRegionDTOValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<NewRegionDTOValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateRegionDTOValidator>();
+
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddControllersWithViews()
